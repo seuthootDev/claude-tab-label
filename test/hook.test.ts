@@ -88,3 +88,33 @@ test("titleSequence uses the ascii tag when asked", () => {
   assert.ok(out.includes(badge("s1").ascii));
   assert.ok(!out.includes(badge("s1").emoji));
 });
+
+test("CLAUDE_TAB_LABEL_SHOW_DIR=1 puts the project folder in front of the label", () => {
+  const d = fakeDeps({ env: { CLAUDE_TAB_LABEL_SHOW_DIR: "1" } });
+  const out = runHook(
+    JSON.stringify({ hook_event_name: "UserPromptSubmit", session_id: "s1", prompt: "fix the failing test", cwd: "/home/test/api" }),
+    d,
+  );
+  assert.equal(seq(out), `\x1b]0;${badge("s1").emoji} api · fix the failing test\x07`);
+});
+
+test("without CLAUDE_TAB_LABEL_SHOW_DIR the title has no folder prefix", () => {
+  const d = fakeDeps();
+  const out = runHook(
+    JSON.stringify({ hook_event_name: "UserPromptSubmit", session_id: "s1", prompt: "fix the failing test", cwd: "/home/test/api" }),
+    d,
+  );
+  assert.equal(seq(out), titleSequence("s1", "fix the failing test"));
+});
+
+test("with CLAUDE_TAB_LABEL_SHOW_DIR a long label is shortened within TITLE_CHARS", () => {
+  const d = fakeDeps({ env: { CLAUDE_TAB_LABEL_SHOW_DIR: "1" } });
+  const out = runHook(
+    JSON.stringify({ hook_event_name: "UserPromptSubmit", session_id: "s1", prompt: "x".repeat(100), cwd: "/home/test/api" }),
+    d,
+  );
+  const s = seq(out);
+  assert.ok(s.includes("api · "));
+  assert.ok(s.includes("…"));
+  assert.ok(Array.from(s.slice(4, -1)).length <= 32);
+});

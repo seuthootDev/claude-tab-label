@@ -52,6 +52,8 @@ Each prompt you send replaces the label with its first non-empty line, except:
 
 The first prompt of a session always counts, so a new tab is labelled right away. Change the threshold with `CLAUDE_TAB_LABEL_MIN_CHARS` (for example `4` if you write short Korean or Chinese prompts).
 
+Set `CLAUDE_TAB_LABEL_SHOW_DIR=1` to put the project folder in front of the label, e.g. `🟩 api · fix refund rounding test`, so tabs from different repos stay apart. The label is shortened to keep the whole title within 30 characters. The status line is unchanged.
+
 To give a session a fixed name of your own, use Claude Code's built-in `/rename <name>`. It shows up in bold in the status line next to the latest prompt.
 
 ## How it works

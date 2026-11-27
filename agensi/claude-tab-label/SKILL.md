@@ -43,6 +43,7 @@ It relies on Claude Code hooks (`terminalSequence`) and the status line, so it d
 - The first prompt of a session always counts.
 - `CLAUDE_TAB_LABEL_MIN_CHARS=<n>` changes the threshold.
 - `CLAUDE_TAB_LABEL_ASCII=1` uses a plain-text tag (e.g. `[G]`) instead of the coloured-square emoji, for terminals that cannot show emoji. The status line keeps its ANSI colour.
+- `CLAUDE_TAB_LABEL_SHOW_DIR=1` puts the last folder of the session's working directory in front of the tab title (e.g. `🟩 api · fix refund rounding test`). The status line is unchanged.
 - For a fixed name, the user can run Claude Code's built-in `/rename <name>`. It appears in bold in the status line.
 
 ## Troubleshooting
